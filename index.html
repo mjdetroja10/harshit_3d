@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        model-viewer {
+            height: 1000px;
+            width: 1000px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <!-- <model-viewer
+        alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
+        src="./stacy_lightweight.glb" ar shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer> -->
+
+    <model-viewer camera-controls touch-action="pan-y" ar ar-modes="webxr scene-viewer" scale="1 1 1"
+        shadow-intensity="1" id="orbit-demo" src="./stacy_lightweight.glb"
+        alt="An animated 3D model of a robot"></model-viewer>
+</body>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+
+<script>
+    (() => {
+        const modelViewer = document.querySelector('#orbit-demo');
+        let isMouseOver = false;
+
+        modelViewer.addEventListener('mouseenter', () => {
+            isMouseOver = true;
+        });
+
+        modelViewer.addEventListener('mouseleave', () => {
+            isMouseOver = false;
+        });
+
+        const orbitCycles = [
+            [
+                '100deg 10deg 4m',
+                '-20deg 30deg 2m',
+                modelViewer.cameraOrbit
+            ]
+            // Add more orbit cycles as needed
+        ];
+
+        let currentOrbitIndex = 0;
+
+        setInterval(() => {
+            if (isMouseOver) {
+                const orbitCycle = orbitCycles[currentOrbitIndex];
+                const newOrbit = orbitCycle[(orbitCycle.indexOf(modelViewer.cameraOrbit) + 1) % orbitCycle.length];
+                modelViewer.cameraOrbit = newOrbit;
+            }
+        }, 1000);
+    })();
+
+</script>
+
+</html>
